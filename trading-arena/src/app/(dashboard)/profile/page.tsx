@@ -34,7 +34,7 @@ export default function ProfilePage() {
               </div>
               <div className="flex items-center text-slate-600">
                 <User className="mr-3 h-4 w-4 text-slate-400" />
-                Profile data loads from Supabase
+              
               </div>
             </div>
           </CardContent>
