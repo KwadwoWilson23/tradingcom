@@ -79,7 +79,7 @@ export default function CompetitionsPage() {
             <PlusCircle className="mb-4 h-10 w-10 text-slate-300" />
             <h2 className="text-lg font-semibold text-slate-900">No competitions configured yet</h2>
             <p className="mt-2 max-w-md text-sm text-slate-500">
-              Once a Wilson admin creates public competitions in Supabase, they will appear here automatically.
+              Competitions created will appear here
             </p>
           </CardContent>
         </Card>

@@ -85,12 +85,12 @@ export default function JoinPage() {
           <Badge variant="primary" className="mb-4 uppercase tracking-wide">No login needed</Badge>
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">Join a Competition</h1>
           <p className="mt-3 max-w-2xl text-slate-600">
-            Choose a real competition from Supabase, enter the public username for the leaderboard, then connect MT4/MT5 read-only.
+            Choose a competition , enter the public username for the leaderboard, then connect MT4/MT5 read-only.
           </p>
         </div>
         <div className="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
           <Zap className="h-4 w-4" />
-          Bridge server ready
+          Are You Ready?
         </div>
       </div>
 
