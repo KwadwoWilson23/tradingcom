@@ -20,7 +20,7 @@ export default function WilsonCompetitionsPage() {
   useEffect(() => {
     let mounted = true;
 
-    fetch('/api/admin/competitions')
+    fetch('/api/wilson/competitions')
       .then((response) => (response.ok ? response.json() : []))
       .then((data: Competition[]) => {
         if (mounted) setCompetitions(Array.isArray(data) ? data : []);

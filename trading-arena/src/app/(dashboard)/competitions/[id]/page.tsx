@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createServerSupabaseClient, hasSupabaseConfig } from '@/lib/supabase/server';
 
 export const instant = false;
 
@@ -15,6 +15,10 @@ function formatAccountType(value: string | null) {
 
 export default async function CompetitionDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  if (!hasSupabaseConfig()) {
+    return <CompetitionNotFound />;
+  }
+
   const supabase = await createServerSupabaseClient();
 
   const { data: competition } = await supabase
@@ -30,19 +34,7 @@ export default async function CompetitionDetailPage({ params }: { params: Promis
     .eq('competition_id', id);
 
   if (!competition) {
-    return (
-      <div className="mx-auto max-w-4xl space-y-6">
-        <Link href="/competitions" className="inline-flex items-center text-sm text-slate-500 hover:text-blue-600">
-          <ArrowLeft className="mr-1 h-4 w-4" /> Back to Competitions
-        </Link>
-        <Card>
-          <CardContent className="p-10 text-center">
-            <h1 className="text-2xl font-bold text-slate-900">Competition not found</h1>
-            <p className="mt-2 text-slate-500">This competition is private, deleted, or has not been created yet.</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
+    return <CompetitionNotFound />;
   }
 
   return (
@@ -109,6 +101,22 @@ export default async function CompetitionDetailPage({ params }: { params: Promis
         </CardHeader>
         <CardContent className="py-10 text-center text-sm text-slate-500">
           Rankings will appear after traders connect real MT4/MT5 accounts and the sync service records snapshots.
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function CompetitionNotFound() {
+  return (
+    <div className="mx-auto max-w-4xl space-y-6">
+      <Link href="/competitions" className="inline-flex items-center text-sm text-slate-500 hover:text-blue-600">
+        <ArrowLeft className="mr-1 h-4 w-4" /> Back to Competitions
+      </Link>
+      <Card>
+        <CardContent className="p-10 text-center">
+          <h1 className="text-2xl font-bold text-slate-900">Competition not found</h1>
+          <p className="mt-2 text-slate-500">This competition is private, deleted, or has not been created yet.</p>
         </CardContent>
       </Card>
     </div>

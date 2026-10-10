@@ -55,7 +55,7 @@ export default function CreateCompetitionPage() {
     try {
       setError(null);
 
-      const response = await fetch('/api/admin/competitions', {
+      const response = await fetch('/api/wilson/competitions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -110,7 +110,7 @@ export default function CreateCompetitionPage() {
                   name="name" 
                   value={formData.name} 
                   onChange={handleChange} 
-                  placeholder="e.g. November Pro Challenge" 
+                  placeholder="Competition name" 
                   required 
                 />
               </div>
@@ -156,7 +156,7 @@ export default function CreateCompetitionPage() {
                   min="0"
                   value={formData.prizePool} 
                   onChange={handleChange} 
-                  placeholder="e.g. 5000" 
+                  placeholder="Prize amount" 
                   required 
                 />
               </div>
@@ -217,7 +217,7 @@ export default function CreateCompetitionPage() {
                   max="100"
                   value={formData.maxDrawdown} 
                   onChange={handleChange} 
-                  placeholder="e.g. 5.0" 
+                  placeholder="Maximum drawdown" 
                 />
               </div>
               <div className="flex items-center h-full pt-8">

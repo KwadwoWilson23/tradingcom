@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createServerSupabaseClient, hasSupabaseConfig } from '@/lib/supabase/server';
 import type { CompetitionStatus } from '@/types/database';
 
 const competitionStatuses: CompetitionStatus[] = ['draft', 'registration', 'active', 'completed', 'cancelled'];
@@ -11,6 +11,10 @@ function parseCompetitionStatus(status: string | null): CompetitionStatus | null
 }
 
 export async function GET(request: Request) {
+  if (!hasSupabaseConfig()) {
+    return NextResponse.json([]);
+  }
+
   const supabase = await createServerSupabaseClient();
   const { searchParams } = new URL(request.url);
   const status = parseCompetitionStatus(searchParams.get('status'));

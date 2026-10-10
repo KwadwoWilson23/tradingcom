@@ -98,7 +98,7 @@ export default function LeaderboardPage() {
                       <Trophy className="mb-4 h-10 w-10 text-slate-300" />
                       <h2 className="text-lg font-semibold text-slate-900">No leaderboard data yet</h2>
                       <p className="mt-2 max-w-md text-sm text-slate-500">
-                        Rankings will be calculated from real connected accounts. No sample traders are displayed.
+                        Rankings will be calculated from real connected accounts.
                       </p>
                     </div>
                   </TableCell>

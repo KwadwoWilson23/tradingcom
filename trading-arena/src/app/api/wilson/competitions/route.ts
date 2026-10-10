@@ -1,15 +1,12 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { generateCompetitionCode } from '@/lib/utils';
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { requireWilsonAdmin } from '@/lib/auth/wilson-admin';
 
 export async function GET(request: Request) {
   try {
-    const supabase = await createServerSupabaseClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    
-    // Simplistic admin check. Replace with actual roles.
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const adminError = await requireWilsonAdmin();
+    if (adminError) return adminError;
 
     const adminClient = createAdminClient();
     const { data, error } = await adminClient
@@ -26,10 +23,8 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const supabase = await createServerSupabaseClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const adminError = await requireWilsonAdmin();
+    if (adminError) return adminError;
 
     const body = await request.json();
     const joinCode = body.code || generateCompetitionCode();

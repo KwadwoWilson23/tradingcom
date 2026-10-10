@@ -11,7 +11,7 @@ import type { Competition, CompetitionStatus } from '@/types/database';
 
 function toHandle(username: string) {
   const clean = username.trim().replace(/^@+/, '').replace(/\s+/g, '_').toLowerCase();
-  return clean ? `@${clean}` : '@your_username';
+  return clean ? `@${clean}` : '@pending';
 }
 
 function initialsFrom(username: string) {
@@ -110,9 +110,6 @@ export default function JoinPage() {
               <CardContent className="flex flex-col items-center justify-center p-10 text-center">
                 <PlusCircle className="mb-4 h-10 w-10 text-slate-300" />
                 <h3 className="text-lg font-semibold text-slate-900">No competitions available</h3>
-                <p className="mt-2 max-w-md text-sm text-slate-500">
-                  Create a public competition in the Wilson portal and it will appear here.
-                </p>
               </CardContent>
             </Card>
           ) : (
@@ -172,7 +169,7 @@ export default function JoinPage() {
               <label className="space-y-2">
                 <span className="text-sm font-semibold text-slate-700">Leaderboard username</span>
                 <Input
-                  placeholder="Example: KwamePips"
+                  placeholder="Public leaderboard username"
                   className="h-11"
                   value={username}
                   onChange={(event) => {

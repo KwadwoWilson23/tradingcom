@@ -1,11 +1,15 @@
 import { NextResponse } from 'next/server';
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createServerSupabaseClient, hasSupabaseConfig } from '@/lib/supabase/server';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ competitionId: string }> }
 ) {
   try {
+    if (!hasSupabaseConfig()) {
+      return NextResponse.json([]);
+    }
+
     const { competitionId } = await params;
     const supabase = await createServerSupabaseClient();
     

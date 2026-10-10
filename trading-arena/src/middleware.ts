@@ -34,17 +34,24 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // Protect Wilson/admin surfaces with both a private route and one allowed email.
+  // Protect Wilson surfaces with both a private route and one allowed email.
   const isWilsonRoute = request.nextUrl.pathname.startsWith('/wilson');
-  const isAdminApiRoute = request.nextUrl.pathname.startsWith('/api/admin');
+  const isWilsonApiRoute = request.nextUrl.pathname.startsWith('/api/wilson');
 
-  if (isWilsonRoute || isAdminApiRoute) {
-    if (!user) return NextResponse.redirect(new URL('/login', request.url));
+  if (isWilsonRoute || isWilsonApiRoute) {
+    if (!user) {
+      if (isWilsonApiRoute) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+
     const emailAllowed = !!allowedAdminEmail && user.email?.toLowerCase() === allowedAdminEmail;
     const { data: profile } = await supabase.from('profiles').select('is_admin').eq('id', user.id).single();
 
     if (!emailAllowed || !profile?.is_admin) {
-      if (isAdminApiRoute) {
+      if (isWilsonApiRoute) {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
       }
 

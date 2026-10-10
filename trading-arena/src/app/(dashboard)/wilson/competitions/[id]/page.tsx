@@ -27,8 +27,8 @@ export default function WilsonCompetitionDetailPage({ params }: PageProps) {
       setId(resolvedId);
 
       Promise.all([
-        fetch(`/api/admin/competitions/${resolvedId}`).then((response) => (response.ok ? response.json() : null)),
-        fetch(`/api/admin/competitions/${resolvedId}/entries`).then((response) => (response.ok ? response.json() : [])),
+        fetch(`/api/wilson/competitions/${resolvedId}`).then((response) => (response.ok ? response.json() : null)),
+        fetch(`/api/wilson/competitions/${resolvedId}/entries`).then((response) => (response.ok ? response.json() : [])),
       ])
         .then(([competitionData, entryData]) => {
           if (!mounted) return;
