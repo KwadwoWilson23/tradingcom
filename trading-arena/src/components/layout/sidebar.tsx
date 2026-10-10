@@ -31,7 +31,7 @@ export function Sidebar({
   ]
 
   if (isAdmin) {
-    navItems.push({ name: 'Admin Portal', icon: Settings, path: '/admin' })
+    navItems.push({ name: 'Wilson Portal', icon: Settings, path: '/wilson' })
   }
 
   const sidebarContent = (
@@ -99,3 +99,4 @@ export function Sidebar({
     </>
   )
 }
+

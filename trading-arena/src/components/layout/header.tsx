@@ -45,10 +45,10 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
 
         <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
           <div className="hidden md:block text-right">
-            <div className="text-sm font-semibold text-slate-900">Alex Trader</div>
-            <div className="text-xs font-medium text-slate-500">Rank #42</div>
+            <div className="text-sm font-semibold text-slate-900">Guest</div>
+            <div className="text-xs font-medium text-slate-500">No account connected</div>
           </div>
-          <Avatar initials="AT" size="sm" />
+          <Avatar initials="G" size="sm" />
         </div>
       </div>
     </header>

@@ -11,10 +11,11 @@ import { Loader2 } from 'lucide-react';
 export default function CreateCompetitionPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    accountType: 'Demo Only',
+    accountType: 'demo_only',
     startDate: '',
     endDate: '',
     registrationDeadline: '',
@@ -50,12 +51,39 @@ export default function CreateCompetitionPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+
+    try {
+      setError(null);
+
+      const response = await fetch('/api/admin/competitions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: generatedCode,
+          name: formData.name,
+          description: formData.description || null,
+          account_type: formData.accountType,
+          start_date: new Date(formData.startDate).toISOString(),
+          end_date: new Date(formData.endDate).toISOString(),
+          registration_deadline: formData.registrationDeadline ? new Date(formData.registrationDeadline).toISOString() : null,
+          prize_pool: Number(formData.prizePool || 0),
+          max_participants: formData.maxParticipants ? Number(formData.maxParticipants) : null,
+          max_drawdown_pct: formData.maxDrawdown ? Number(formData.maxDrawdown) : null,
+          is_public: formData.isPublic,
+        }),
+      });
+
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({ error: 'Failed to create competition' }));
+        throw new Error(body.error || 'Failed to create competition');
+      }
+
+      router.push('/wilson/competitions');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create competition');
+    } finally {
       setLoading(false);
-      router.push('/admin/competitions');
-    }, 1500);
+    }
   };
 
   return (
@@ -70,6 +98,11 @@ export default function CreateCompetitionPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                {error}
+              </div>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-slate-700">Competition Name *</label>
@@ -110,9 +143,9 @@ export default function CreateCompetitionPage() {
                   className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
                   required
                 >
-                  <option value="Demo Only">Demo Only</option>
-                  <option value="Real Only">Real Only</option>
-                  <option value="Any">Any</option>
+                  <option value="demo_only">Demo Only</option>
+                  <option value="real_only">Real Only</option>
+                  <option value="any">Any</option>
                 </select>
               </div>
               <div className="space-y-2">
@@ -208,7 +241,7 @@ export default function CreateCompetitionPage() {
             </div>
 
             <div className="pt-6 border-t flex justify-end gap-3">
-              <Link href="/admin/competitions">
+              <Link href="/wilson/competitions">
                 <Button type="button" variant="outline">Cancel</Button>
               </Link>
               <Button type="submit" className="bg-blue-600 hover:bg-blue-700" disabled={loading}>
@@ -222,3 +255,4 @@ export default function CreateCompetitionPage() {
     </div>
   );
 }
+

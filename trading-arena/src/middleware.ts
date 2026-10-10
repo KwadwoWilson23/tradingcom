@@ -5,6 +5,7 @@ export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const allowedAdminEmail = process.env.ADMIN_EMAIL?.toLowerCase();
 
   if (!supabaseUrl?.startsWith('http') || !supabaseAnonKey || supabaseAnonKey === 'your_anon_key') {
     return supabaseResponse;
@@ -33,11 +34,22 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // Protect admin routes - check is_admin
-  if (request.nextUrl.pathname.startsWith('/admin')) {
+  // Protect Wilson/admin surfaces with both a private route and one allowed email.
+  const isWilsonRoute = request.nextUrl.pathname.startsWith('/wilson');
+  const isAdminApiRoute = request.nextUrl.pathname.startsWith('/api/admin');
+
+  if (isWilsonRoute || isAdminApiRoute) {
     if (!user) return NextResponse.redirect(new URL('/login', request.url));
+    const emailAllowed = !!allowedAdminEmail && user.email?.toLowerCase() === allowedAdminEmail;
     const { data: profile } = await supabase.from('profiles').select('is_admin').eq('id', user.id).single();
-    if (!profile?.is_admin) return NextResponse.redirect(new URL('/dashboard', request.url));
+
+    if (!emailAllowed || !profile?.is_admin) {
+      if (isAdminApiRoute) {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
+
+      return NextResponse.redirect(new URL('/join', request.url));
+    }
   }
 
   return supabaseResponse;

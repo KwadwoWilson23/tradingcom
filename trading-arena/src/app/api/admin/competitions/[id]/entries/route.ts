@@ -17,7 +17,7 @@ export async function GET(
       .from('competition_entries')
       .select(`
         *,
-        users (
+        profiles (
           id,
           username,
           avatar_url,

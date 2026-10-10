@@ -32,14 +32,14 @@ export async function POST(request: Request) {
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const body = await request.json();
-    const joinCode = generateCompetitionCode();
+    const joinCode = body.code || generateCompetitionCode();
     
     const adminClient = createAdminClient();
     const { data, error } = await adminClient
       .from('competitions')
       .insert({
         ...body,
-        join_code: joinCode,
+        code: joinCode,
         status: 'registration'
       })
       .select()
