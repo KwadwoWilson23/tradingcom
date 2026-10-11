@@ -145,7 +145,7 @@ export default function CreateCompetitionPage() {
                 >
                   <option value="demo_only">Demo Only</option>
                   <option value="real_only">Real Only</option>
-                  <option value="both">Both</option>
+                  <option value="any">Both (Demo &amp; Real)</option>
                 </select>
               </div>
               <div className="space-y-2">
