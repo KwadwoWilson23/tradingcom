@@ -128,7 +128,7 @@ export default function CreateCompetitionPage() {
                 name="description" 
                 value={formData.description}
                 onChange={handleChange}
-                className="flex min-h-[100px] w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex min-h-25 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
                 placeholder="Describe the rules and details of this competition..."
               />
             </div>
@@ -145,7 +145,7 @@ export default function CreateCompetitionPage() {
                 >
                   <option value="demo_only">Demo Only</option>
                   <option value="real_only">Real Only</option>
-                  <option value="any">Any</option>
+                  <option value="both">Both</option>
                 </select>
               </div>
               <div className="space-y-2">
