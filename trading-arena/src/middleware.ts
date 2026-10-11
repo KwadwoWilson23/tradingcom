@@ -1,16 +1,16 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import { getSupabaseAuthConfig, hasSupabaseConfig } from './lib/supabase/config';
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const allowedAdminEmail = process.env.ADMIN_EMAIL?.toLowerCase();
 
-  if (!supabaseUrl?.startsWith('http') || !supabaseAnonKey || supabaseAnonKey === 'your_anon_key') {
+  if (!hasSupabaseConfig()) {
     return supabaseResponse;
   }
 
+  const { url: supabaseUrl, anonKey: supabaseAnonKey } = getSupabaseAuthConfig();
   const supabase = createServerClient(
     supabaseUrl,
     supabaseAnonKey,

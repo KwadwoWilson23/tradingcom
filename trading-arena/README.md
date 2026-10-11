@@ -25,11 +25,14 @@ Open [http://localhost:3000/join](http://localhost:3000/join) to preview the pub
 Create `.env.local` from `.env.example` and set these values in Vercel and Railway:
 
 ```bash
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 METAAPI_TOKEN=
 METAAPI_DOMAIN=https://mt-client-api-v1.agiliumtrade.agiliumtrade.ai
+ADMIN_EMAIL=
 ```
 
 ## Deploy Frontend on Vercel

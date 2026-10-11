@@ -1,28 +1,17 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { Database } from '@/types/database';
+import { getSupabaseAuthConfig, hasSupabaseConfig } from './config';
 
-export function hasSupabaseConfig() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  return Boolean(
-    url?.startsWith('http') &&
-    !url.includes('your_supabase') &&
-    key &&
-    !key.startsWith('your_')
-  );
-}
+export { hasSupabaseConfig };
 
 export async function createServerSupabaseClient() {
-  if (!hasSupabaseConfig()) {
-    throw new Error('Supabase environment variables are not configured.');
-  }
+  const { url, anonKey } = getSupabaseAuthConfig();
 
   const cookieStore = await cookies();
   return createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    url,
+    anonKey,
     {
       cookies: {
         getAll() { return cookieStore.getAll(); },
