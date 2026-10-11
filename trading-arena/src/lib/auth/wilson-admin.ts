@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
+const ALLOWED_ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'kwadwowilson2@gmail.com').toLowerCase();
+
 export async function requireWilsonAdmin() {
-  const allowedEmail = process.env.ADMIN_EMAIL?.toLowerCase();
   const supabase = await createServerSupabaseClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -10,17 +11,7 @@ export async function requireWilsonAdmin() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  if (!allowedEmail || user.email?.toLowerCase() !== allowedEmail) {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-  }
-
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('is_admin')
-    .eq('id', user.id)
-    .single();
-
-  if (!profile?.is_admin) {
+  if (user.email?.toLowerCase() !== ALLOWED_ADMIN_EMAIL) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 

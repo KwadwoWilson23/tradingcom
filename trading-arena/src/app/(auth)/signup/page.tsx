@@ -121,6 +121,7 @@ export default function SignupPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     minLength={6}
+                    maxLength={6}
                     className="pr-10"
                   />
                   <button
@@ -132,7 +133,7 @@ export default function SignupPage() {
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
-                <p className="text-xs text-slate-400">Minimum 6 characters</p>
+                <p className="text-xs text-slate-400">Password must be exactly 6 characters</p>
               </div>
               <Button type="submit" variant="primary" className="w-full" disabled={loading}>
                 {loading ? 'Creating account...' : 'Create Account'}

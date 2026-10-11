@@ -84,6 +84,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={6}
+                  maxLength={6}
                   className="pr-10"
                 />
                 <button
