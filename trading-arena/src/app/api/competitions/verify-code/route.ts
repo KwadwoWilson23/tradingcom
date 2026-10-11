@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { createServerSupabaseClient, hasSupabaseConfig } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
+import { hasSupabaseConfig } from '@/lib/supabase/server';
 
 export async function POST(request: Request) {
   try {
@@ -7,14 +8,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Supabase is not configured' }, { status: 503 });
     }
 
-    const supabase = await createServerSupabaseClient();
     const { code } = await request.json();
 
     if (!code) {
       return NextResponse.json({ error: 'Code is required' }, { status: 400 });
     }
 
-    const { data: competition, error } = await supabase
+    const adminClient = createAdminClient();
+    const { data: competition, error } = await adminClient
       .from('competitions')
       .select('*')
       .eq('code', code)

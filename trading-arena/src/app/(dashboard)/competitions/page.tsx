@@ -57,7 +57,7 @@ export default function CompetitionsPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="mb-2 text-3xl font-bold tracking-tight text-slate-900">Competitions</h1>
-          <p className="text-slate-500">Live competitions from your Supabase database.</p>
+          <p className="text-slate-500">Live competitions</p>
         </div>
         <Tabs value={filter} onValueChange={(value) => setFilter(value as 'all' | CompetitionStatus)}>
           <TabsList>
